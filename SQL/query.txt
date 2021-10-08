@@ -1,0 +1,22 @@
+create table Customers
+(
+	Id serial Primary Key,
+	Name varchar(30)
+);
+INSERT INTO Customers (Name) VALUES
+	('Max'),
+	('Pavel'),
+	('Ivan'),
+	('Leonid')
+;
+create table Orders
+(
+	Id serial Primary Key,
+	CustomerId integer References Customers (Id)
+);
+Insert into Orders (CustomerID) values
+	(2),
+	(4)
+;
+select Name from Customers
+where id not in (select customerid from orders)
