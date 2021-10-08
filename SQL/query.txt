@@ -18,5 +18,5 @@ Insert into Orders (CustomerID) values
 	(2),
 	(4)
 ;
-select Name from Customers
+select Name as Customers from Customers
 where id not in (select customerid from orders)
