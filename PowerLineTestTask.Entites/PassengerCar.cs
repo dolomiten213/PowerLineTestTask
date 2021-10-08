@@ -10,10 +10,10 @@ namespace PowerLineTestTask.Entites
     {
         public override CarType Type => CarType.PassengerCar;
 
-        private const double RANGE_DECREASE = 0.94;
-        
-        
-        public int MaxPassengers { get; init; }
+        private const double RANGE_DECREASE = 0.06;
+
+
+        public int MaxPassengers { get; init; } = int.MaxValue;
 
         private int _passengers = 0;
         public int Passengers
@@ -32,15 +32,19 @@ namespace PowerLineTestTask.Entites
             }
         }
 
-        
+
         public override double GetRange()
         {
-            return base.GetRange() * Passengers * RANGE_DECREASE;
+            var multiplicator = (1 - Passengers * RANGE_DECREASE);
+            multiplicator = Math.Max(multiplicator, 0);
+            return base.GetRange() * multiplicator;
         }
 
         public override double PredictDistance()
         {
-            return base.PredictDistance() * Passengers * RANGE_DECREASE;
+            var multiplicator = (1 - Passengers * RANGE_DECREASE);
+            multiplicator = Math.Max(multiplicator, 0);
+            return base.PredictDistance() * multiplicator;
         }
     }
 }

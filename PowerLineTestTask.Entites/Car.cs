@@ -4,8 +4,9 @@ namespace PowerLineTestTask.Entites
     abstract public class Car
     {
         public abstract CarType Type { get; }
+        
         public double FuelConsumption { get; init; } = 0;
-        public double Tank { get; init; } = 0;
+        public double Tank { get; init; } = double.MaxValue;
         private double _fuel;
         public double Fuel
         {
@@ -16,9 +17,14 @@ namespace PowerLineTestTask.Entites
                 {
                     throw new System.InvalidOperationException($"Unacceptable fuel quantity({value}). Min = 0 Max = {Tank}");
                 }
+                else
+                {
+                    _fuel = value;
+                }
             }
         }
         public double Speed { get; set; } = 0;
+
 
         public virtual double GetRange()
         {

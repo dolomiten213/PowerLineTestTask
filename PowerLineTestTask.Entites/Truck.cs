@@ -10,10 +10,10 @@ namespace PowerLineTestTask.Entites
     {
         public override CarType Type => CarType.Truck;
 
-        private const double RANGE_DECREASE = 0.96;
-        
-        
-        public int MaxCapacity { get; init; } = 10000;
+        private const double RANGE_DECREASE = 0.04;
+
+
+        public int MaxCapacity { get; init; } = int.MaxValue;
         
         private int _capacity = 0;
         public int Capacity
@@ -25,18 +25,26 @@ namespace PowerLineTestTask.Entites
                 {
                     throw new InvalidOperationException($"Unacceptable capacity ({value}). Min = 0 Max = {MaxCapacity}");
                 }
+                else
+                {
+                    _capacity = value;
+                }
             }
         }
 
 
         public override double GetRange()
         {
-            return base.GetRange() * Capacity * RANGE_DECREASE;
+            var multiplicator = (1 - Math.Ceiling(Capacity / 200.0) * RANGE_DECREASE);
+            multiplicator = Math.Max(multiplicator, 0);
+            return base.GetRange() * multiplicator;
         }
 
         public override double PredictDistance()
         {
-            return base.PredictDistance() * ((Capacity / 200.0) + 1) * RANGE_DECREASE;
+            var multiplicator = (1 - Math.Ceiling(Capacity / 200.0) * RANGE_DECREASE);
+            multiplicator = Math.Max(multiplicator, 0);
+            return base.PredictDistance() * multiplicator;
         }
     }
 }
