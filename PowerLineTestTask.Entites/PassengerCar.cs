@@ -10,10 +10,33 @@ namespace PowerLineTestTask.Entites
     {
         public override CarType Type => CarType.PassengerCar;
 
+//===============================================================================================//
+
         private const double RANGE_DECREASE = 0.06;
 
+//===============================================================================================//
+//
+        private int _maxPassengers = int.MaxValue;
+        public int MaxPassengers
+        {
+            get => _maxPassengers;
+            set
+            {
+                if (value < _passengers)
+                {
+                    throw new InvalidOperationException($"Unacceptable maximum number of passengers ({value}). Current number of passengers is higher");
+                }
+                else if (value < 0)
+                {
+                    throw new InvalidOperationException($"Unacceptable maximum passengers number ({value}). Passengers number should be non negative");
+                }
+                else
+                {
+                    _maxPassengers = value;
+                }
+            }
+        }
 
-        public int MaxPassengers { get; init; } = int.MaxValue;
 
         private int _passengers = 0;
         public int Passengers
@@ -21,9 +44,13 @@ namespace PowerLineTestTask.Entites
             get => _passengers;
             set
             {
-                if (value > MaxPassengers)
+                if (value > _maxPassengers)
                 {
                     throw new InvalidOperationException($"Unacceptable number of passengers ({value}). Min = 0 Max = {MaxPassengers}");
+                }
+                else if (value < 0)
+                {
+                    throw new InvalidOperationException($"Unacceptable passengers number ({value}). Passengers number should be non negative");
                 }
                 else
                 {
@@ -32,19 +59,21 @@ namespace PowerLineTestTask.Entites
             }
         }
 
+//===============================================================================================//
 
+        private double CalculateMultiplicator()
+        {
+            var multiplicator = (1 - Passengers * RANGE_DECREASE);
+            multiplicator = Math.Max(multiplicator, 0);
+            return multiplicator;
+        }
         public override double GetRange()
         {
-            var multiplicator = (1 - Passengers * RANGE_DECREASE);
-            multiplicator = Math.Max(multiplicator, 0);
-            return base.GetRange() * multiplicator;
+            return base.GetRange() * CalculateMultiplicator();
         }
-
         public override double PredictDistance()
         {
-            var multiplicator = (1 - Passengers * RANGE_DECREASE);
-            multiplicator = Math.Max(multiplicator, 0);
-            return base.PredictDistance() * multiplicator;
+            return base.PredictDistance() * CalculateMultiplicator();
         }
     }
 }
