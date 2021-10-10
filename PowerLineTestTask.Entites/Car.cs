@@ -56,11 +56,11 @@ namespace PowerLineTestTask.Entites
             {
                 if (value > Tank)
                 {
-                    throw new InvalidOperationException($"Unacceptable fuel quantity({value}). Min = 0 Max = {Tank}");
+                    throw new InvalidOperationException($"Unacceptable fuel quantity ({value}). Min = 0 Max = {Tank}");
                 }
                 if (value < 0)
                 {
-                    throw new InvalidOperationException($"Unacceptable capacity ({value}). Fuel should be non negative");
+                    throw new InvalidOperationException($"Unacceptable fuel quantity ({value}). Fuel should be non negative");
                 }
                 else
                 {

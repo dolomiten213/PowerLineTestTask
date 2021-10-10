@@ -50,7 +50,7 @@ namespace PowerLineTestTask.Entites
                 }
                 else if (value < 0)
                 {
-                    throw new InvalidOperationException($"Unacceptable passengers number ({value}). Passengers number should be non negative");
+                    throw new InvalidOperationException($"Unacceptable number of passengers ({value}). Passengers number should be non negative");
                 }
                 else
                 {
